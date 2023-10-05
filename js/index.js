@@ -1,26 +1,30 @@
     let yearOfBirth, cityOfResidence, favoriteSport;
+    let resultInfo, ageInfo, residenceInfo, sportInfo;
     const currentYear = new Date().getFullYear();
-    let resultInfo, ageInfo;
-    let residenceInfo;
-    let cancelResult;
-    let sportInfo;
 
     do {
         yearOfBirth = prompt('Enter your year of birth');
-    } while (  isNaN(yearOfBirth) || yearOfBirth === '' );
+        if ( yearOfBirth === null ) {
+            alert('It is a pity that you didn\'t want to enter your year of birth')
+            break;
+        }
+    } while ( isNaN(yearOfBirth) || yearOfBirth === '' );
 
     do {
         cityOfResidence = prompt('Enter your city of residence');
-    } while ( cityOfResidence === '' );
+        if ( cityOfResidence  === null ) {
+            alert('It is a pity that you didn\'t want to enter your city of residence')
+            break;
+        }
+    } while ( containsNumbers(cityOfResidence) || cityOfResidence === '' );
 
     do {
         favoriteSport = prompt('Enter your favorite sport');
-    } while ( favoriteSport === '' );
-
-    if(yearOfBirth !== null) {
-        age = currentYear - yearOfBirth;
-        ageInfo = `Your age is: ${age}`
-    }
+        if ( favoriteSport  === null ) {
+            alert('It is a pity that you didn\'t want to enter your favorite sport')
+            break;
+        }
+    } while ( containsNumbers(favoriteSport) || favoriteSport === '' );
 
     const getCountryFromCities = (cityOfResidence) => {
         const capital = {
@@ -31,8 +35,6 @@
         return capital[cityOfResidence]
     }
 
-    residenceInfo = getCountryFromCities(cityOfResidence) ? `You live in a capital of: ${getCountryFromCities(cityOfResidence)}` : `You live in a city: ${cityOfResidence}`
-
     const getSportAndChampion = (favoriteSport) => {
         const sportAndChampion = {
             football: 'Emerson',
@@ -42,17 +44,18 @@
         return sportAndChampion[favoriteSport]
     }
 
-    sportInfo = getSportAndChampion(favoriteSport) ? `Cool! Want to become : ${getSportAndChampion(favoriteSport)}`: favoriteSport
+    ageInfo = yearOfBirth !== null ? `Your age is: ${currentYear - yearOfBirth}`: '';
+
+    residenceInfo = cityOfResidence !== null ? getCountryFromCities(cityOfResidence) ? `You live in a capital of: ${getCountryFromCities(cityOfResidence)}` :
+        `You live in a city: ${cityOfResidence}` : '';
+
+    sportInfo = favoriteSport !== null ? getSportAndChampion(favoriteSport) ? `Cool! Want to become : ${getSportAndChampion(favoriteSport)}`:
+        `You favorite sport : ${favoriteSport}` : '';
 
     resultInfo = ageInfo + '\r\n' + residenceInfo + '\r\n' + sportInfo
 
-    if (  yearOfBirth === null || cityOfResidence === null || favoriteSport === null){
-        cancelResult = 'Шкода, що Ви не захотіли ввести свій(ю) ';
-        if ( yearOfBirth === null ) cancelResult += 'year of birth' + '\,';
-        if ( cityOfResidence === null ) cancelResult += 'city' + '\,';
-        if ( favoriteSport === null ) cancelResult += 'favorite sport';
-        alert(cancelResult)
-    } else{
-        alert(resultInfo)
-    }
+    if (resultInfo !=='') alert(resultInfo)
 
+    function containsNumbers(str) {
+        return  /\d/.test(str);
+    }
